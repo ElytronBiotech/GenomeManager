@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "genomehandler"
+version = "0.1.0"
+description = "Minimal, fast, and clean Python library for genomes and gene annotations."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "ElytronBiotech" }]
+dependencies = [
+  "numpy>=2.2.6",
+  "biopython>=1.85",
+]
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.urls]
+Homepage = "https://github.com/ElytronBiotech/genomehandler"
+Issues = "https://github.com/ElytronBiotech/genomehandler/issues"
+Documentation = "https://github.com/ElytronBiotech/genomehandler#readme"
+
+[tool.hatch.build]
+include = ["README.md", "LICENSE", "NOTICE", "docs/**"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/genomehandler"]
+
+[tool.hatch.build.targets.editable]
+packages = ["src/genomehandler"]
