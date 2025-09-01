@@ -358,6 +358,22 @@ class GenomeDB:
         self.genome.load_sequences(seqs)  # no temp file
         self._genome_loaded = True
 
+    
+    def genes_to_matrix(self, with_strand: bool = False) -> tuple[np.ndarray, list[str]]:
+        """Return all genes as a numpy array (rows=genes, cols=fields), and column names."""
+        # Extract tuples from each Gene object
+        data = [gene.as_tuple(with_strand=with_strand) for gene in self.genes.values()]
+
+        # Dynamically generate column names
+        colnames = ["gene_id", "gene_name", "chromosome", "start", "end"]
+        if with_strand:
+            colnames.append("strand")
+
+        # Build a numpy array (regular, not structured)
+        np_array = np.array(data, dtype=object)
+
+        return np_array, colnames
+
     # ---------- optional: genbank proteins ----------
     def load_genbank(self, gbk_file: str, *, load_genome_if_present: bool = True) -> int:
         """
