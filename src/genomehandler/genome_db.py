@@ -161,7 +161,6 @@ class GenomeDB:
                 # Ignore InterProScan-style protein coordinates
                 if t in protein_only:
                     continue
-                print("$")
                 try:
                     s_i = int(start)
                     e_i = int(end)
@@ -179,8 +178,6 @@ class GenomeDB:
                         gid = a.get("ID") or a.get("gene_id") or f"gene:{chrom}:{s_i}-{e_i}:{strand}"
                         gname = a.get("Name") or a.get("gene_name") or a.get("locus_tag") or a.get("gene") or gid
                         if gid not in self.genes:
-                            print("#")
-                            print(gname)    
                             g = Gene(gid, gname, chrom, s_i, e_i, strand)
                             self.genes[gid] = g
                         else:
@@ -245,8 +242,6 @@ class GenomeDB:
                         or f"feat:{chrom}:{s_i}-{e_i}:{strand}"
                     )
                     gname = a.get("Name") or a.get("gene_name") or a.get("locus_tag") or a.get("gene") or gid
-                    print("%")
-                    print(gname)
                     g = self.genes.get(gid)
                     if not g:
                         g = Gene(gid, gname, chrom, s_i, e_i, strand)
