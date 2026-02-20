@@ -1,5 +1,8 @@
 # GenomeHandler
 
+
+![Python](https://img.shields.io/badge/Python-3.14-blue?logo=python&logoColor=white)
+![Elytron](https://img.shields.io/badge/Elytron-Biotech-4A90D9?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABVklEQVR42rWSvUsDQRDF3+7cR4xEC1FblQQ1QcEmlgeCGKwUCbZa21iIrYV2VhbaCGIp3D+gheDVVioGQbBKobGwiHh6ud2xiLlcEhAFfbAwD/a383Z2gX+Q+Fq/AIpFily8/pHShR44jhHr3hGntU4XUlaC9gBkALY06+Pw9vQAgASgG5tlhDkOAWDTFtvCSq5o6HVovSre98Yn5+uQ83YTdDzwnpXntK1YFJozjHJI669bwjJi/XDK6ITbAyBRRWsdg3CuVS6F4LWwLhuv2MTdLMMgMF6E6yHQ6ZDJrnDOryqlfInAAQ8T7UPRwBge3RuiKVhBkq82DaWGeohuMmfIXuRRG7Ah+tGIEUxSyWmwcwqC541DExAaVMwkrK/vETCnKFK+KSf7x+BLQl43PI+qbGFvip8yyA5EqrgDpK4SyUSvpAfeDXfUHb9P/mP3/m4OG4+ASGkedKBZx+RAAAAAElFTkSuQmCC)
 Minimal, fast, and clean Python library for working with genomes and gene annotations.
 
 - **Inputs:** FASTA (optionally `.gz`), GFF3 (hierarchical or Bakta/Prokka-style “gene-less”), optional GenBank for protein info.
