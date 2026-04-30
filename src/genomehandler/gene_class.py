@@ -146,15 +146,6 @@ class Gene:
     
 
     # --- quick-access helpers (most-used values) ---
-    @property
-    def product(self) -> str | None:
-        # Prefer explicit product if you later choose to store it;
-        # otherwise synthesize a reasonable label.
-        if hasattr(self, "_product") and self._product:
-            return self._product
-        # fallback: prefer gene_name, else protein_id/name, else locus_tag/id
-        return self.gene_name or getattr(self, "protein_id", None) or self.gene_id
-
     def as_tuple(self, *, with_strand: bool = False) -> tuple:
         """
         Return the common fields quickly.

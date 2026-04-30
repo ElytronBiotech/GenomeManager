@@ -305,6 +305,15 @@ class GenomeDB:
         return [g] if g else []
 
 
+    def get_genes_by_name(self, name: str) -> list[Gene]:
+        """Look up genes by name/symbol/locus_tag. Returns [] if unknown."""
+        gids = self.genes_by_name.get(name, [])
+        return [self.genes[gid] for gid in gids if gid in self.genes]
+
+    def genes_at(self, chrom: str, pos: int) -> list[Gene]:
+        """Return all genes covering a 1-based position. Returns [] if none."""
+        return self.genes_overlapping(chrom, pos, pos)
+
     def genes_overlapping(self, chrom: str, start: int, end: int) -> list[Gene]:
         """Return ALL genes overlapping the closed interval [start, end]."""
         if start > end:
