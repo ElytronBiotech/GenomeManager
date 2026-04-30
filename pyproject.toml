@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "genomehandler"
-version = "0.1.0"
+version = "0.1.1"
 description = "Minimal, fast, and clean Python library for genomes and gene annotations."
 readme = "README.md"
 requires-python = ">=3.11"
