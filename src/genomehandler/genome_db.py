@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 import gzip
+import logging
 import os
+import warnings
 
 import numpy as np
 from Bio import SeqIO
 
 from .genome_class import Genome
 from .gene_class import Gene
+
+logger = logging.getLogger(__name__)
 
 
 class GenomeDB:
@@ -275,6 +279,8 @@ class GenomeDB:
                 blocks = exons_by_tx.get(tid, [])
                 if prefer == "cds" and cds_by_tx.get(tid):
                     blocks = cds_by_tx[tid]
+                elif prefer == "exon" and not blocks and cds_by_tx.get(tid):
+                    blocks = cds_by_tx[tid]
                 if not blocks:
                     continue
                 for s, e in sorted(blocks, key=lambda x: (x[0], x[1])):
@@ -292,9 +298,13 @@ class GenomeDB:
 
         # friendly warnings
         if not self.genes and looks_like_interpro:
-            print("Warning: GFF3 looks like InterProScan (protein-centric). Skipping protein features; no genomic genes loaded.")
+            warnings.warn(
+                "GFF3 looks like InterProScan (protein-centric). "
+                "Skipping protein features; no genomic genes loaded.",
+                stacklevel=2,
+            )
         elif not parsed_any_row:
-            print("Warning: No parseable rows found in GFF3.")
+            warnings.warn("No parseable rows found in GFF3.", stacklevel=2)
 
         return len(self.genes)
 
@@ -390,7 +400,7 @@ class GenomeDB:
         import os, gzip
         from Bio import SeqIO
         from Bio.SeqFeature import CompoundLocation
-        print("Loading GenBank:", gbk_file)
+        logger.debug("Loading GenBank: %s", gbk_file)
         if not os.path.exists(gbk_file):
             raise FileNotFoundError(f"GenBank not found: {gbk_file}")
 

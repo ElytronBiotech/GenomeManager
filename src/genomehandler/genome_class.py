@@ -8,6 +8,13 @@ _ASCII_RC[ord('C')] = ord('G'); _ASCII_RC[ord('c')] = ord('g')
 _ASCII_RC[ord('G')] = ord('C'); _ASCII_RC[ord('g')] = ord('c')
 _ASCII_RC[ord('T')] = ord('A'); _ASCII_RC[ord('t')] = ord('a')
 
+_INT_ENCODE_LUT = np.zeros(256, dtype=np.uint8)
+_INT_ENCODE_LUT[ord('A')] = 1; _INT_ENCODE_LUT[ord('a')] = 1
+_INT_ENCODE_LUT[ord('C')] = 2; _INT_ENCODE_LUT[ord('c')] = 2
+_INT_ENCODE_LUT[ord('G')] = 3; _INT_ENCODE_LUT[ord('g')] = 3
+_INT_ENCODE_LUT[ord('T')] = 4; _INT_ENCODE_LUT[ord('t')] = 4
+_INT_ENCODE_LUT[ord('N')] = 5; _INT_ENCODE_LUT[ord('n')] = 5
+
 class Genome:
     """
     Memory-efficient genome representation.
@@ -27,13 +34,8 @@ class Genome:
     def _encode(self, s: str) -> np.ndarray:
         if self._storage == "bytes":
             return np.frombuffer(s.encode("ascii"), dtype=np.uint8)
-        # "int" mode
-        # vectorized mapping via lookup table
-        lut = np.zeros(256, dtype=np.uint8)
-        lut[ord('A')] = 1; lut[ord('C')] = 2; lut[ord('G')] = 3; lut[ord('T')] = 4; lut[ord('N')] = 5
-        lut[ord('a')] = 1; lut[ord('c')] = 2; lut[ord('g')] = 3; lut[ord('t')] = 4; lut[ord('n')] = 5
         arr = np.frombuffer(s.encode("ascii"), dtype=np.uint8)
-        return lut[arr]
+        return _INT_ENCODE_LUT[arr]
 
     def _decode(self, arr: np.ndarray) -> str:
         if self._storage == "bytes":
@@ -44,7 +46,7 @@ class Genome:
         return ascii_arr.tobytes().decode("ascii")
 
     # --- public API ---
-    def load_fasta(self, fasta_file: str):
+    def load_fasta(self, fasta_file: str) -> list[str]:
         """
         Load genome from a FASTA file, storing each chromosome as a compact np.uint8 array.
         """
@@ -56,7 +58,7 @@ class Genome:
         return list(self.chromosomes.keys())
     
     # Added this function to handle gbk integrated genomes
-    def load_sequences(self, seqs: list[tuple[str, str]]):
+    def load_sequences(self, seqs: list[tuple[str, str]]) -> list[str]:
         self.chromosomes.clear()
         for name, s in seqs:
             self.chromosomes[name] = self._encode(s)
@@ -111,21 +113,21 @@ class Genome:
             # int mode: reverse + decode (no complementing to keep mapping simple)
             return self._decode(view[::-1])
     
-    def get_chromosome_size(self, chrom_name):
+    def get_chromosome_size(self, chrom_name: str) -> int | None:
         """Get the length of a chromosome."""
         if chrom_name not in self.chromosomes:
             return None
         return len(self.chromosomes[chrom_name])
-    
-    def get_genome_size(self):
+
+    def get_genome_size(self) -> int:
         """Get the total size of the genome."""
         return sum(len(seq) for seq in self.chromosomes.values())
-    
-    def get_chromosome_names(self):
+
+    def get_chromosome_names(self) -> list[str]:
         """Get a list of all chromosome names."""
         return list(self.chromosomes.keys())
-    
-    def __str__(self):
+
+    def __str__(self) -> str:
         """String representation of the genome info."""
         chrom_info = [f"{name} ({len(seq)} bp)\n" for name, seq in self.chromosomes.items()]
         chrom_info_str = "    ".join(chrom_info)
