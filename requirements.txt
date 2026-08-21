@@ -1,4 +1,4 @@
 # Exact dev pins (used for local/CI reproducibility).
 # pyproject.toml declares loose floors (numpy>=2.2.6, biopython>=1.85) for consumers.
-numpy==2.4.6
+numpy==2.5.2
 biopython==1.87
